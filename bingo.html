@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml" dir="ltr"> 
+<head>
+<title>Colloquium Bingo - Randomized Bingo Cards</title>
+
+<style type="text/css" media="all">
+	*, body, html { padding: 0px; margin: 0px; }
+	body { background-color: #EEE; }
+	p { padding: 2px 5px; }
+	input { padding: 2px 3px; }
+
+	div.break { page-break-before: always; border-bottom: 1px solid #000; }
+	table.page { overflow: hidden; width: 100%; }
+	table.page td { padding: 15px; }
+
+	#generation_form { border-bottom: 3px solid #999; padding: 5px 10px; background-color: #EEE; }
+	#scoresheets { background-color: #FFF; border: 1px solid #000; width: 800px; margin-left: 40px; margin-top: 15px; text-align: center; font-family: arial, sans-serif; overflow: hidden; }
+
+	#scoresheets .sheet { width: 100%; border: 2px dashed #999; }
+	#scoresheets .sheet h1 { font-size: 30px; color: #999; text-align: left; padding: 4px 10px; }
+	#scoresheets .sheet table.bingo_table { width: 90%; border-collapse: collapse; margin: 5%; }
+	#scoresheets .sheet table.bingo_table th { width: 20%; text-align: center; font-size: 36px; }
+	#scoresheets .sheet table.bingo_table td { width: 20%; text-align: center; font-size: 8px; border: 1px solid #000; vertical-align: middle; padding: 1px; height: 50px;}
+	#scoresheets .sheet table.bingo_table td.free { border: 2px solid #007; }
+</style>
+<style type="text/css" media="print">
+	#generation_form { display: none; }
+	#scoresheets { width: 100%; margin: 0px; padding: 0px; border: none; font-size: 8pt; }
+	div.break { border-bottom: none; }
+</style>
+
+
+<script type="text/javascript">
+function generate_sheets() {
+	document.getElementById('scoresheets').innerHTML = "";
+
+	var n = document.getElementById('num_sheets').value;
+
+	var text = "<table class='page' cellpadding=0 cellspacing=0><tr>";
+	for(var i=1; i<=n; i++) {
+		text += "<td>" + get_sheet() + "</td>";
+
+		if(!(i%4) && i<n) {
+			// "page break"
+			text += "</tr></table><div class='break'></div><table class='page' cellpadding=0 cellspacing=0><tr>";
+		} else if(!(i%2) && i<n) {
+			text += "</tr><tr>";			
+		}
+	}
+	text += "</tr></table>";
+	document.getElementById('scoresheets').innerHTML = text;
+
+}
+function get_sheet() {
+	var bingoCells = [
+		'"That\'s an interesting question"',
+		'Grad student asks question',
+		'...et al.',
+		'Work ties in to Cancer/HIV or Alternative Energy',
+		'Entire slide filled with equations',
+		'"Future work will..."',
+		'Typo on slide',
+		'Use of Powerpoint with blue background',
+		'Speaker wastes 5 minutes explaining outline',
+		'Speaker forgets to thank collaborators',
+		'Cell phone goes off',
+		'Technical difficulties',
+		'A slide contains less than 5 words',
+		'Someone leaves early',
+		'"The data clearly shows..."',
+		'You\'ve no idea what\'s going on',
+		'A professor falls asleep',
+		'Speaker sucks up to someone in department',
+		'"Beyond the scope of this work"',
+		'Student bobs head fighting sleep',
+		'References Advisor (past or present)',
+		'Results conveniently show improvement',
+		'Repeated use of "um..."',
+		'Speaker bashes previous work',
+		'Harmonic oscillator reference',
+		'References work done by students',
+		'Fewer than three people laugh at joke attempt',
+		'Presents result published in <em>Nature</em>',
+		'Presentation is given on a Mac',
+		'Reference to paper that is more than 50 years old',
+		'Data follows a Lorentzian distribution',
+		'Presents computer simulated data',
+		'Use of Chalkboard'
+		];
+		
+	bingoCells.sort(function() {return 0.5 - Math.random()});
+
+	var text = "<div class='sheet'>";
+	text += "<h1>Colloquium</h1>";
+	text += "<table class='bingo_table' cellpadding='0' cellspacing='0'>";
+	text += "<tr><th>B</th><th>I</th><th>N</th><th>G</th><th>O</th></tr>";
+
+	text += "<tr>";
+	for(var i=1; i<=25; i++) {
+		if(i==13) {
+			text += "<td class='free'>FREE <br />Speaker runs out of time</td>";
+		} else {
+			text += "<td>" + bingoCells.pop() + "</td>";
+		}
+		if(!(i%5) && i<25) { text += "</tr><tr>"; }
+	}
+	text += "</tr></table>";
+	text += "</div>";
+	return text;
+}
+</script>
+
+ 
+</head> 
+
+<body>
+<div id="generation_form">
+	<em style="font-size: smaller;">Inspired by comic <a href="http://www.phdcomics.com/comics/archive.php?comicid=847">#847</a> from <a href="http://www.phdcomics.com/">www.phdcomics.com</a>.</em>
+	<br />
+	<strong>Number of scorecards:</strong>
+	<input type="text" value="12" id="num_sheets" />
+	<input type="button" value="Generate!" onClick="javascript:generate_sheets();" />
+	<input type="button" value="Print" onClick="javascript:window.print();" />
+</div>
+<div id="scoresheets">
+	<p><em>Scoresheets will appear here.</em></p>
+</div>
+</body>
+</html>
